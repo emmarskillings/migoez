@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Platform, Image, Text, View } from 'react-native';
 
 import firebase from './config/firebase';
+import { onLogin, onRegister, onLogout, checkLoginStatus } from './auth/auth.js'
 
 // Components to display when the user is LoggedIn and LoggedOut 
 
@@ -24,13 +25,12 @@ export default class App extends React.Component {
    * (logged out) or an Object (logged in)
    */
   componentDidMount() {
-    this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
-      console.log(user)
+    this.authSubscription = checkLoginStatus((user) => {
       this.setState({
         loading: false,
-        user,
-      });
-    });
+        user
+      })
+    })
   }
 
 
@@ -57,49 +57,6 @@ export default class App extends React.Component {
   }
 }
 
-
-const onLogin = (email, password) => {
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((user) => {
-      // If you need to do anything with the user, do it here
-      // The user will be logged in automatically by the 
-      // `onAuthStateChanged` listener we set up in App.js earlier
-    })
-    .catch((error) => {
-      const { code, message } = error;
-      console.log("Error: ", message)
-      // For details of error codes, see the docs
-      // The message contains the default Firebase string
-      // representation of the error
-    });
-}
-
-
-const onRegister = (email, password) => {
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((user) => {
-      console.log("Hooray!", user)
-      // If you need to do anything with the user, do it here
-      // The user will be logged in automatically by the
-      // `onAuthStateChanged` listener we set up in App.js earlier
-    })
-    .catch((error) => {
-      const { code, message } = error;
-      console.log("Oh no", error)
-      // For details of error codes, see the docs
-      // The message contains the default Firebase string
-      // representation of the error
-    });
-}
-
-function onLogout() {
-  firebase.auth().signOut()
-    .then(() => {
-      console.log("Logged out")
-  }).catch((error) => {
-    console.log("Oh no", error)
-  });
-}
 
 const styles = StyleSheet.create({
   container: {
