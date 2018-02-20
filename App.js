@@ -9,8 +9,8 @@ import {
   checkLoginStatus
 } from "./src/api/auth.js";
 
-import LoggedIn from "./src/LoggedIn";
-import LoggedOut from "./src/LoggedOut";
+import LoggedIn from "./src/scenes/LoggedIn";
+import LoggedOut from "./src/scenes/LoggedOut";
 
 export default class App extends React.Component {
   constructor() {
