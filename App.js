@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, Platform, Image, Text, View } from "react-native";
 
 import firebase from "./src/api/config";
@@ -12,7 +12,7 @@ import {
 import LoggedIn from "./src/scenes/LoggedIn";
 import LoggedOut from "./src/scenes/LoggedOut";
 
-export default class App extends React.Component {
+export default class App extends Component {
   constructor() {
     super();
     this.state = {
