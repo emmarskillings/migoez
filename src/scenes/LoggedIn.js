@@ -27,7 +27,8 @@ const LoggedIn = ({ onLogout }) => (
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#F5FCFF"
   },
   button: {
     flex: 1,
