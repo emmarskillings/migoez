@@ -9,7 +9,6 @@ import {
 } from "../api/auth.js";
 
 import LoggedOut from '../scenes/LoggedOut'
-
 import MainTabNavigator from './MainTabNavigator';
 
 const RootStackNavigator = StackNavigator(
@@ -19,12 +18,14 @@ const RootStackNavigator = StackNavigator(
     },
   },
   {
+    headerMode: 'none',
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
       },
+      headerVisible: false,
     }),
-  }
+  },
 );
 
 class RootNavigator extends Component {

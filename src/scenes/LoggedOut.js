@@ -6,8 +6,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 
-
-
 class LoggedOut extends Component {
 	constructor(props) {
 		super(props)
@@ -16,7 +14,6 @@ class LoggedOut extends Component {
 			password: ''
 		}
 	}
-
 
 	render() {
 		const { onRegister, onLogin } = this.props
@@ -42,9 +39,7 @@ class LoggedOut extends Component {
 			/>
 		</View>)
 	}
-
 }
-
 
 const styles = StyleSheet.create({
   container: {

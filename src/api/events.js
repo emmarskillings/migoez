@@ -1,7 +1,6 @@
 import firebase from "./config.js";
 
 // getAllEvents
-
 export const getAllEvents = () => {
 	let query = firebase.database().ref("events");
 	query.on("child_added", data => {
@@ -10,7 +9,6 @@ export const getAllEvents = () => {
 };
 
 // setEvent
-
 export const setEvent = (
 	latitude,
 	longitude,
