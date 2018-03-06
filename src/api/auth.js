@@ -1,10 +1,14 @@
 import firebase from "./config";
 
 export const checkLoginStatus = callback => {
-  firebase.auth().onAuthStateChanged(user => {
-    callback(user);
-  });
+  firebase.auth().onAuthStateChanged(callback);
 };
+
+function onAuthStateChanged(callback) {
+  delay(1000)
+  const user = "John Doe"
+  callback(user)
+}
 
 export const onLogin = (email, password) => {
   firebase

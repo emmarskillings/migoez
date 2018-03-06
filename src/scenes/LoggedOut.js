@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default LoggedOut
+export default LoggedOut;
