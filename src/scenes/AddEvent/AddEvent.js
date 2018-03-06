@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import DateTimePicker from "react-native-modal-datetime-picker";
+import moment from "moment";
 
 class AddEvent extends Component {
   constructor() {
@@ -96,8 +97,9 @@ class AddEvent extends Component {
           isVisible={this.state.selectingStartDate}
           onConfirm={date => {
             console.log(date);
+            console.log(moment());
             this.setState({
-              startTime: date,
+              startTime: moment(date).format("MMMM Do YYYY, h:mm a"),
               selectingStartDate: false
             });
           }}
