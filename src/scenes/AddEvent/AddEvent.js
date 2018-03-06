@@ -8,6 +8,7 @@ import {
   View
 } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 class AddEvent extends Component {
   constructor() {
@@ -19,7 +20,8 @@ class AddEvent extends Component {
       location: "",
       startTime: "",
       endTime: "",
-      selectingLocation: false
+      selectingLocation: false,
+      selectingStartDate: false
     };
   }
 
@@ -84,7 +86,28 @@ class AddEvent extends Component {
           title="Select Location"
         />
         <Text>{"Location: " + this.state.location}</Text>
-        <Button title="Add Event" />
+        <Button
+          onPress={() => this.setState({ selectingStartDate: true })}
+          title="Start Date"
+        />
+        <Text>{"Start Date: " + this.state.startTime}</Text>
+        <DateTimePicker
+          mode="datetime"
+          isVisible={this.state.selectingStartDate}
+          onConfirm={date => {
+            console.log(date);
+            this.setState({
+              startTime: date,
+              selectingStartDate: false
+            });
+          }}
+          onCancel={() =>
+            this.setState({
+              selectingStartDate: false
+            })
+          }
+        />
+        <Button title="Add Event" onPress={() => console.log("Add Event")} />
       </SafeAreaView>
     );
   }
