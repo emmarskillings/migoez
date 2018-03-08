@@ -19,10 +19,11 @@ class AddEvent extends Component {
       description: "",
       coords: {},
       location: "",
-      startTime: "",
-      endTime: "",
+      startTime: moment(),
+      endTime: moment(),
       selectingLocation: false,
-      selectingStartDate: false
+      selectingStartDate: false,
+      selectingEndDate: false
     };
   }
 
@@ -91,21 +92,49 @@ class AddEvent extends Component {
           onPress={() => this.setState({ selectingStartDate: true })}
           title="Start Date"
         />
-        <Text>{"Start Date: " + this.state.startTime}</Text>
+        <Text>
+          {"Start Date: " + this.state.startTime.format("MMMM Do YYYY, h:mm a")}
+        </Text>
         <DateTimePicker
           mode="datetime"
           isVisible={this.state.selectingStartDate}
           onConfirm={date => {
-            console.log(date);
-            console.log(moment());
+            formatDate = moment(date);
+
             this.setState({
-              startTime: moment(date).format("MMMM Do YYYY, h:mm a"),
+              startTime: formatDate,
+              endTime: formatDate,
               selectingStartDate: false
             });
           }}
           onCancel={() =>
             this.setState({
               selectingStartDate: false
+            })
+          }
+        />
+        <Button
+          onPress={() => this.setState({ selectingEndDate: true })}
+          title="End Date"
+        />
+        <Text>
+          {"End Date: " + this.state.endTime.format("MMMM Do YYYY, h:mm a")}
+        </Text>
+        <DateTimePicker
+          mode="datetime"
+          isVisible={this.state.selectingEndDate}
+          date={this.state.endTime.toDate()}
+          onConfirm={date => {
+            formatDate = moment(date);
+
+            this.setState({
+              endTime: formatDate,
+              selectingEndDate: false
+            });
+          }}
+          onCancel={() =>
+            this.setState({
+              selectingEndDate: false
             })
           }
         />
