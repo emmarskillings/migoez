@@ -10,6 +10,7 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
+import LocationMap from "./LocationMap.js";
 
 class AddEvent extends Component {
   constructor() {
@@ -28,43 +29,16 @@ class AddEvent extends Component {
   }
 
   render() {
+    const locationOnPress = (data, details = null) => {
+      this.setState({
+        coords: details.geometry.location,
+        location: details.name,
+        selectingLocation: false
+      });
+    };
+
     return this.state.selectingLocation ? (
-      <SafeAreaView style={styles.container}>
-        <GooglePlacesAutocomplete
-          placeholder="Search"
-          minLength={2}
-          autoFocus={false}
-          returnKeyType={"default"}
-          fetchDetails={true}
-          onPress={(data, details = null) => {
-            // 'details' is provided when fetchDetails = true
-            this.setState({
-              coords: details.geometry.location,
-              location: details.name,
-              selectingLocation: false
-            });
-          }}
-          query={{
-            // available options: https://developers.google.com/places/web-service/autocomplete
-            key: "AIzaSyCIk4o60qIIfiy-t4LXDvCwyLR9O7oGJTU",
-            language: "en" // language of the results
-          }}
-          styles={{
-            textInputContainer: {
-              width: "100%"
-            },
-            textInput: {
-              margin: 2,
-              borderColor: "#000000",
-              borderWidth: 1
-            },
-            predefinedPlacesDescription: {
-              color: "#1faadb"
-            }
-          }}
-          currentLocation={false}
-        />
-      </SafeAreaView>
+      <LocationMap onPress={locationOnPress} />
     ) : (
       <SafeAreaView style={styles.container}>
         <View>
