@@ -20,7 +20,7 @@ class AddEvent extends Component {
       title: "",
       description: "",
       coords: {},
-      location: "Location",
+      location: "",
       startTime: moment(),
       endTime: moment(),
       selectingLocation: false,
@@ -59,14 +59,17 @@ class AddEvent extends Component {
 
         <TextButton
           onPress={() => this.setState({ selectingLocation: true })}
+          placeholder="Location"
           text={this.state.location}
         />
         <TextButton
           onPress={() => this.setState({ selectingStartDate: true })}
+          title="Start"
           text={this.state.startTime.format("MMMM Do YYYY, h:mm a")}
         />
         <TextButton
           onPress={() => this.setState({ selectingEndDate: true })}
+          title="End"
           text={this.state.endTime.format("MMMM Do YYYY, h:mm a")}
         />
         <DateTimePicker
