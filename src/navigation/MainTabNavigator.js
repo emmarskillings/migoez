@@ -1,16 +1,16 @@
-import React from 'react';
-import { TabNavigator, TabBarBottom } from 'react-navigation';
+import React from "react";
+import { TabNavigator, TabBarBottom } from "react-navigation";
 
-import HomeScreen from '../scenes/LoggedIn';
-import Profile from '../scenes/Profile';
+import HomeScreen from "../scenes/LoggedIn";
+import Profile from "../scenes/Profile";
 
 export default TabNavigator(
   {
     Home: {
-      screen: props => <HomeScreen onLogout={props.screenProps.onLogout}/>
+      screen: HomeScreen, 
     },
     Profile: {
-      screen: Profile,
+      screen: props => <Profile onLogout={props.screenProps.onLogout}/>
     },
   },
   {
@@ -18,15 +18,15 @@ export default TabNavigator(
       tabBarIcon: () => {
         const { routeName } = navigation.state;
         switch (routeName) {
-          case 'Home':
+          case "Home":
             break;
-          case 'Profile':
+          case "Profile":
             break;
         }
       }
     }),
     tabBarComponent: TabBarBottom,
-    tabBarPosition: 'bottom',
+    tabBarPosition: "bottom",
     animationEnabled: true,
     swipeEnabled: true,
   }
