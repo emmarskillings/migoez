@@ -11,6 +11,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 import LocationMap from "./LocationMap.js";
+import TextButton from "./components/TextButton.js";
 
 class AddEvent extends Component {
   constructor() {
@@ -19,7 +20,7 @@ class AddEvent extends Component {
       title: "",
       description: "",
       coords: {},
-      location: "",
+      location: "Location",
       startTime: moment(),
       endTime: moment(),
       selectingLocation: false,
@@ -41,34 +42,33 @@ class AddEvent extends Component {
       <LocationMap onPress={locationOnPress} />
     ) : (
       <SafeAreaView style={styles.container}>
-        <View>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Title"
-            onChangeText={text => this.setState({ title: text })}
-            value={this.state.title}
-          />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Description"
-            multiline={true}
-            numberOfLines={3}
-            onChangeText={text => this.setState({ description: text })}
-            value={this.state.description}
-          />
-        </View>
-        <Button
+        <TextInput
+          style={styles.textInput}
+          placeholder="Title"
+          onChangeText={text => this.setState({ title: text })}
+          value={this.state.title}
+        />
+        <TextInput
+          style={styles.textInput}
+          placeholder="Description"
+          multiline={true}
+          numberOfLines={3}
+          onChangeText={text => this.setState({ description: text })}
+          value={this.state.description}
+        />
+
+        <TextButton
           onPress={() => this.setState({ selectingLocation: true })}
-          title="Select Location"
+          text={this.state.location}
         />
-        <Text>{"Location: " + this.state.location}</Text>
-        <Button
+        <TextButton
           onPress={() => this.setState({ selectingStartDate: true })}
-          title="Start Date"
+          text={this.state.startTime.format("MMMM Do YYYY, h:mm a")}
         />
-        <Text>
-          {"Start Date: " + this.state.startTime.format("MMMM Do YYYY, h:mm a")}
-        </Text>
+        <TextButton
+          onPress={() => this.setState({ selectingEndDate: true })}
+          text={this.state.endTime.format("MMMM Do YYYY, h:mm a")}
+        />
         <DateTimePicker
           mode="datetime"
           isVisible={this.state.selectingStartDate}
@@ -87,13 +87,6 @@ class AddEvent extends Component {
             })
           }
         />
-        <Button
-          onPress={() => this.setState({ selectingEndDate: true })}
-          title="End Date"
-        />
-        <Text>
-          {"End Date: " + this.state.endTime.format("MMMM Do YYYY, h:mm a")}
-        </Text>
         <DateTimePicker
           mode="datetime"
           isVisible={this.state.selectingEndDate}
