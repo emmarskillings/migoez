@@ -1,95 +1,126 @@
 import React, { Component } from "React";
 import {
-	StyleSheet,
-	SafeAreaView,
-	Text,
-	TextInput,
-	Button,
-	View
+  StyleSheet,
+  SafeAreaView,
+  Text,
+  TextInput,
+  Button,
+  View,
+  Alert
 } from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import moment from "moment";
+import { setEvent } from "../../api/events.js";
+import LocationMap from "./components/LocationMap.js";
+import TextButton from "./components/TextButton.js";
+import DurationPicker from "./components/DurationPicker.js";
 
 class AddEvent extends Component {
-	constructor() {
-		super();
-		this.state = {
-			title: "",
-			description: "",
-			coords: {},
-			startTime: "",
-			endTime: ""
-		};
-	}
+  constructor() {
+    super();
+    this.state = {
+      title: "",
+      description: "",
+      coords: {},
+      location: "",
+      startTime: moment(),
+      endTime: moment(),
+      selectingLocation: false
+    };
+  }
 
-	render() {
-		return (
-			<SafeAreaView style={styles.container}>
-				<View>
-					<TextInput
-						style={styles.textInput}
-						placeholder="Title"
-						onChangeText={text => this.setState({ title: text })}
-						value={this.state.title}
-					/>
-					<TextInput
-						style={styles.textInput}
-						placeholder="Description"
-						multiline={true}
-						numberOfLines={3}
-						onChangeText={text =>
-							this.setState({ description: text })
-						}
-						value={this.state.description}
-					/>
-				</View>
-				<GooglePlacesAutocomplete
-					placeholder="Enter Location"
-					minLength={2}
-					autoFocus={false}
-					returnKeyType={"default"}
-					fetchDetails={true}
-					onPress={(data, details = null) => {
-						// 'details' is provided when fetchDetails = true
-						console.log(details.geometry.location);
-						this.setState({ location: details.geometry.location });
-					}}
-					query={{
-						// available options: https://developers.google.com/places/web-service/autocomplete
-						key: "AIzaSyCIk4o60qIIfiy-t4LXDvCwyLR9O7oGJTU",
-						language: "en" // language of the results
-					}}
-					styles={{
-						textInputContainer: {
-							width: "100%"
-						},
-						textInput: {
-							margin: 2,
-							borderColor: "#000000",
-							borderWidth: 1
-						},
-						predefinedPlacesDescription: {
-							color: "#1faadb"
-						}
-					}}
-					currentLocation={false}
-				/>
-			</SafeAreaView>
-		);
-	}
+  checkFieldsThenSend() {
+    if (this.state.title === "") {
+      Alert.alert("Cannot Save Event", "Please enter a title");
+    } else if (this.state.location === "") {
+      Alert.alert("Cannot Save Event", "Please enter a location");
+    } else if (this.state.endTime.isBefore(this.state.startTime)) {
+      Alert.alert(
+        "Cannot Save Event",
+        "The start date must be before the end date"
+      );
+    } else {
+      const sentState = {
+        ...this.state,
+        startTime: this.state.startTime.format("MMMM Do YYYY, h:mm a"),
+        endTime: this.state.endTime.format("MMMM Do YYYY, h:mm a")
+      };
+      const callback = () => Alert.alert("Event Successfully Added");
+      setEvent(sentState, callback);
+    }
+  }
+
+  render() {
+    const locationOnPress = (data, details = null) => {
+      this.setState({
+        coords: details.geometry.location,
+        location: details.name + ", " + details.formatted_address,
+        selectingLocation: false
+      });
+    };
+
+    return this.state.selectingLocation ? (
+      <LocationMap onPress={locationOnPress} />
+    ) : (
+      <SafeAreaView style={styles.container}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Title"
+          onChangeText={text => this.setState({ title: text })}
+          value={this.state.title}
+        />
+        <TextInput
+          style={styles.textInput}
+          placeholder="Description"
+          multiline={true}
+          numberOfLines={3}
+          onChangeText={text => this.setState({ description: text })}
+          value={this.state.description}
+        />
+
+        <TextButton
+          onPress={() => this.setState({ selectingLocation: true })}
+          placeholder="Select Location"
+          text={this.state.location}
+        />
+        <DurationPicker
+          startTime={this.state.startTime}
+          startOnConfirm={date =>
+            this.setState({ startTime: date, endTime: date })
+          }
+          endTime={this.state.endTime}
+          endOnConfirm={date => this.setState({ endTime: date })}
+        />
+        <Button
+          style={styles.button}
+          title="Add Event"
+          onPress={() => {
+            this.checkFieldsThenSend();
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "#F5FCFF"
-	},
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCFF"
+  },
 
-	textInput: {
-		borderColor: "#000000",
-		borderWidth: 1
-	}
+  textInput: {
+    backgroundColor: "#DDDDDD",
+    width: "90%",
+    margin: 5,
+    padding: 5
+  },
+
+  button: {
+    margin: 5,
+    padding: 5
+  }
 });
 
 export default AddEvent;

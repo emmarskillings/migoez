@@ -2,27 +2,28 @@ import firebase from "./config.js";
 
 // getAllEvents
 export const getAllEvents = () => {
-	let query = firebase.database().ref("events");
-	query.on("child_added", data => {
-		console.log(data.val());
-	});
+  let query = firebase.database().ref("events");
+  query.on("child_added", data => {
+    console.log(data.val());
+  });
 };
 
 // setEvent
 export const setEvent = (
-	latitude,
-	longitude,
-	title,
-	description,
-	startTime,
-	endTime
+  { coords, location, title, description, startTime, endTime },
+  callback
 ) => {
-	let newEventRef = firebase
-		.database()
-		.ref("events")
-		.push();
-	newEventRef.set({
-		latitude,
-		longitude
-	});
+  let newEventRef = firebase
+    .database()
+    .ref("events")
+    .push();
+  newEventRef.set({
+    coords,
+    location,
+    title,
+    description,
+    startTime,
+    endTime
+  });
+  callback();
 };
