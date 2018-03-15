@@ -7,11 +7,10 @@ import {
   Button,
   View
 } from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
-import LocationMap from "./LocationMap.js";
+import LocationMap from "./components/LocationMap.js";
 import TextButton from "./components/TextButton.js";
+import DurationPicker from "./components/DurationPicker.js";
 
 class AddEvent extends Component {
   constructor() {
@@ -23,9 +22,7 @@ class AddEvent extends Component {
       location: "",
       startTime: moment(),
       endTime: moment(),
-      selectingLocation: false,
-      selectingStartDate: false,
-      selectingEndDate: false
+      selectingLocation: false
     };
   }
 
@@ -59,56 +56,22 @@ class AddEvent extends Component {
 
         <TextButton
           onPress={() => this.setState({ selectingLocation: true })}
-          placeholder="Location"
+          placeholder="Select Location"
           text={this.state.location}
         />
-        <TextButton
-          onPress={() => this.setState({ selectingStartDate: true })}
-          title="Start"
-          text={this.state.startTime.format("MMMM Do YYYY, h:mm a")}
-        />
-        <TextButton
-          onPress={() => this.setState({ selectingEndDate: true })}
-          title="End"
-          text={this.state.endTime.format("MMMM Do YYYY, h:mm a")}
-        />
-        <DateTimePicker
-          mode="datetime"
-          isVisible={this.state.selectingStartDate}
-          onConfirm={date => {
-            formatDate = moment(date);
-
-            this.setState({
-              startTime: formatDate,
-              endTime: formatDate,
-              selectingStartDate: false
-            });
-          }}
-          onCancel={() =>
-            this.setState({
-              selectingStartDate: false
-            })
+        <DurationPicker
+          startTime={this.state.startTime}
+          startOnConfirm={date =>
+            this.setState({ startTime: { date }, endTime: { date } })
           }
+          endTime={this.state.endTime}
+          endOnConfirm={date => this.setState({ endTime: { date } })}
         />
-        <DateTimePicker
-          mode="datetime"
-          isVisible={this.state.selectingEndDate}
-          date={this.state.endTime.toDate()}
-          onConfirm={date => {
-            formatDate = moment(date);
-
-            this.setState({
-              endTime: formatDate,
-              selectingEndDate: false
-            });
-          }}
-          onCancel={() =>
-            this.setState({
-              selectingEndDate: false
-            })
-          }
+        <Button
+          style={styles.button}
+          title="Add Event"
+          onPress={() => console.log("Add Event")}
         />
-        <Button title="Add Event" onPress={() => console.log("Add Event")} />
       </SafeAreaView>
     );
   }
@@ -123,8 +86,15 @@ const styles = StyleSheet.create({
   },
 
   textInput: {
-    borderColor: "#000000",
-    borderWidth: 1
+    backgroundColor: "#DDDDDD",
+    width: "90%",
+    margin: 5,
+    padding: 5
+  },
+
+  button: {
+    margin: 5,
+    padding: 5
   }
 });
 

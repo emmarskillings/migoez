@@ -1,7 +1,7 @@
 import React from "React";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { SafeAreaView, StyleSheet, View } from "react-native";
-import config from "../../api/googlePlaces/config.js";
+import config from "../../../api/googlePlaces/config.js";
 
 const LocationMap = ({ onPress }) => (
   <SafeAreaView style={styles.container}>

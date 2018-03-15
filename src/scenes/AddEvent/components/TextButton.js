@@ -15,7 +15,7 @@ const TextButton = ({ onPress, title, placeholder, text }) => {
   );
 
   return (
-    <TouchableHighlight onPress={onPress}>
+    <TouchableHighlight style={styles.container} onPress={onPress}>
       {title === undefined ? (
         mainText
       ) : (
@@ -28,6 +28,15 @@ const TextButton = ({ onPress, title, placeholder, text }) => {
     </TouchableHighlight>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 5,
+    padding: 5,
+    backgroundColor: "#DDDDDD",
+    width: "90%"
+  }
+});
 
 const shouldShowPlaceholder = (placeholder, text) =>
   text === "" && placeholder !== "";
