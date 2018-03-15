@@ -12,23 +12,20 @@ export const getAllEvents = () => {
 // setEvent
 
 export const setEvent = (
-  latitude,
-  longitude,
-  title,
-  description,
-  startTime,
-  endTime
+  { coords, location, title, description, startTime, endTime },
+  callback
 ) => {
   let newEventRef = firebase
     .database()
     .ref("events")
     .push();
   newEventRef.set({
-    latitude,
-    longitude,
+    coords,
+    location,
     title,
     description,
     startTime,
     endTime
   });
+  callback();
 };

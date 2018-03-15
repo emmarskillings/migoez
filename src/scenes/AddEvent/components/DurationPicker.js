@@ -15,7 +15,7 @@ class DurationPicker extends Component {
 
   render() {
     const { startTime, startOnConfirm, endTime, endOnConfirm } = this.props;
-    console.log(startTime);
+
     return (
       <View style={styles.container}>
         <TextButton

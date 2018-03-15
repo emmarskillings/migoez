@@ -9,6 +9,7 @@ import {
   Alert
 } from "react-native";
 import moment from "moment";
+import { setEvent } from "../../api/events.js";
 import LocationMap from "./components/LocationMap.js";
 import TextButton from "./components/TextButton.js";
 import DurationPicker from "./components/DurationPicker.js";
@@ -27,7 +28,7 @@ class AddEvent extends Component {
     };
   }
 
-  checkFields() {
+  checkFieldsThenSend() {
     if (this.state.title === "") {
       Alert.alert("Cannot Save Event", "Please enter a title");
     } else if (this.state.location === "") {
@@ -37,6 +38,14 @@ class AddEvent extends Component {
         "Cannot Save Event",
         "The start date must be before the end date"
       );
+    } else {
+      const sentState = {
+        ...this.state,
+        startTime: this.state.startTime.format("MMMM Do YYYY, h:mm a"),
+        endTime: this.state.endTime.format("MMMM Do YYYY, h:mm a")
+      };
+      const callback = () => Alert.alert("Event Successfully Added");
+      setEvent(sentState, callback);
     }
   }
 
@@ -44,7 +53,7 @@ class AddEvent extends Component {
     const locationOnPress = (data, details = null) => {
       this.setState({
         coords: details.geometry.location,
-        location: details.name,
+        location: details.name + ", " + details.formatted_address,
         selectingLocation: false
       });
     };
@@ -75,12 +84,9 @@ class AddEvent extends Component {
         />
         <DurationPicker
           startTime={this.state.startTime}
-          startOnConfirm={date => {
-            console.log(date);
-            this.setState({ startTime: date, endTime: date });
-
-            console.log(this.state.startTime.format());
-          }}
+          startOnConfirm={date =>
+            this.setState({ startTime: date, endTime: date })
+          }
           endTime={this.state.endTime}
           endOnConfirm={date => this.setState({ endTime: date })}
         />
@@ -88,8 +94,7 @@ class AddEvent extends Component {
           style={styles.button}
           title="Add Event"
           onPress={() => {
-            this.checkFields();
-            console.log("Add Event");
+            this.checkFieldsThenSend();
           }}
         />
       </SafeAreaView>
