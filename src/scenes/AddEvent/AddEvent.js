@@ -5,7 +5,8 @@ import {
   Text,
   TextInput,
   Button,
-  View
+  View,
+  Alert
 } from "react-native";
 import moment from "moment";
 import LocationMap from "./components/LocationMap.js";
@@ -24,6 +25,19 @@ class AddEvent extends Component {
       endTime: moment(),
       selectingLocation: false
     };
+  }
+
+  checkFields() {
+    if (this.state.title === "") {
+      Alert.alert("Cannot Save Event", "Please enter a title");
+    } else if (this.state.location === "") {
+      Alert.alert("Cannot Save Event", "Please enter a location");
+    } else if (this.state.endTime.isBefore(this.state.startTime)) {
+      Alert.alert(
+        "Cannot Save Event",
+        "The start date must be before the end date"
+      );
+    }
   }
 
   render() {
@@ -61,16 +75,22 @@ class AddEvent extends Component {
         />
         <DurationPicker
           startTime={this.state.startTime}
-          startOnConfirm={date =>
-            this.setState({ startTime: { date }, endTime: { date } })
-          }
+          startOnConfirm={date => {
+            console.log(date);
+            this.setState({ startTime: date, endTime: date });
+
+            console.log(this.state.startTime.format());
+          }}
           endTime={this.state.endTime}
-          endOnConfirm={date => this.setState({ endTime: { date } })}
+          endOnConfirm={date => this.setState({ endTime: date })}
         />
         <Button
           style={styles.button}
           title="Add Event"
-          onPress={() => console.log("Add Event")}
+          onPress={() => {
+            this.checkFields();
+            console.log("Add Event");
+          }}
         />
       </SafeAreaView>
     );
