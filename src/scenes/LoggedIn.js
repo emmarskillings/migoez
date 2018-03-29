@@ -6,13 +6,19 @@
 import React, { Component } from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
 import { MapView } from "expo";
+import { getAllEvents } from "../api/events.js";
 
 class LoggedIn extends Component {
   constructor() {
     super();
     this.state = {
-      markers: [{latlng: {latitude: 37.78825, longitude: -122.4324}, title: "Test title", description: "Test description"}]
+      markers: []
     };
+  }
+
+  componentDidMount() {
+    const callback = (data) => {this.setState({markers: [...this.state.markers, data]})};
+    getAllEvents(callback);
   }
 
   render() {
@@ -20,8 +26,8 @@ class LoggedIn extends Component {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: 49.2625998,
+          longitude: -123.1193748,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         }}
@@ -29,7 +35,7 @@ class LoggedIn extends Component {
         {this.state.markers.map(marker => (
           <MapView.Marker
             key={marker.title}
-            coordinate={marker.latlng}
+            coordinate={{latitude: marker.coords.lat, longitude: marker.coords.lng}}
             title={marker.title}
             description={marker.description}
           />
