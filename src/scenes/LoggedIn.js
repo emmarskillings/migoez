@@ -17,7 +17,7 @@ class LoggedIn extends Component {
   }
 
   componentDidMount() {
-    const callback = (data) => {this.setState({markers: [...this.state.markers, data]})};
+    const callback = (markers) => { this.setState({markers}) }
     getAllEvents(callback);
   }
 
@@ -34,8 +34,8 @@ class LoggedIn extends Component {
       >
         {this.state.markers.map(marker => (
           <MapView.Marker
-            key={marker.title}
-            coordinate={{latitude: marker.coords.lat, longitude: marker.coords.lng}}
+            key={marker.id}
+            coordinate={{ latitude: marker.coords.lat, longitude: marker.coords.lng }}
             title={marker.title}
             description={marker.description}
           />
