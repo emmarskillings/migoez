@@ -1,11 +1,18 @@
 import firebase from "./config.js";
 
 // getAllEvents
-export const getAllEvents = (callback) => {
-  let query = firebase.database().ref("events");
-  query.on("child_added", data => {
-    console.log(data.val());
-    callback(data.val());
+export const getAllEvents = callback => {
+  events = [];
+  let query = firebase.database().ref();
+  query.child("events").once("value", data => {
+    for (var entry of Object.entries(data.val())) {
+      const idEntry = {
+        id: entry[0],
+        ...entry[1]
+      };
+      events = [...events, idEntry];
+    }
+    callback(events);
   });
 };
 

@@ -17,31 +17,38 @@ class LoggedIn extends Component {
   }
 
   componentDidMount() {
-    const callback = (data) => {this.setState({markers: [...this.state.markers, data]})};
+    const callback = markers => {
+      this.setState({ markers });
+    };
     getAllEvents(callback);
   }
 
   render() {
-    return (<SafeAreaView style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: 49.2625998,
-          longitude: -123.1193748,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
-        }}
-      >
-        {this.state.markers.map(marker => (
-          <MapView.Marker
-            key={marker.title}
-            coordinate={{latitude: marker.coords.lat, longitude: marker.coords.lng}}
-            title={marker.title}
-            description={marker.description}
-          />
-        ))}
-      </MapView>
-    </SafeAreaView>);
+    return (
+      <SafeAreaView style={styles.container}>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: 49.2625998,
+            longitude: -123.1193748,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+          }}
+        >
+          {this.state.markers.map(marker => (
+            <MapView.Marker
+              key={marker.id}
+              coordinate={{
+                latitude: marker.coords.lat,
+                longitude: marker.coords.lng
+              }}
+              title={marker.title}
+              description={marker.description}
+            />
+          ))}
+        </MapView>
+      </SafeAreaView>
+    );
   }
 }
 
