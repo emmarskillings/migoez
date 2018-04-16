@@ -4,6 +4,10 @@ export const checkLoginStatus = callback => {
   firebase.auth().onAuthStateChanged(callback);
 };
 
+export const getUserId = () => {
+  return firebase.auth().currentUser.uid;
+};
+
 export const onLogin = (email, password) => {
   firebase
     .auth()

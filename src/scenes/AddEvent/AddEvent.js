@@ -9,6 +9,7 @@ import {
   Alert
 } from "react-native";
 import moment from "moment";
+import { getUserId } from "../../api/auth.js";
 import { setEvent } from "../../api/events.js";
 import LocationMap from "./components/LocationMap.js";
 import TextButton from "./components/TextButton.js";
@@ -24,6 +25,7 @@ class AddEvent extends Component {
       location: "",
       startTime: moment(),
       endTime: moment(),
+      userId: getUserId(),
       selectingLocation: false
     };
   }
@@ -42,7 +44,7 @@ class AddEvent extends Component {
       const sentState = {
         ...this.state,
         startTime: this.state.startTime.format("MMMM Do YYYY, h:mm a"),
-        endTime: this.state.endTime.format("MMMM Do YYYY, h:mm a")
+        endTime: this.state.endTime.format("MMMM Do YYYY, h:mm a")  
       };
       const callback = () => Alert.alert("Event Successfully Added");
       setEvent(sentState, callback);
