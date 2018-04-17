@@ -1,4 +1,5 @@
 import firebase from "./config.js";
+import { getUserId } from "./auth.js";
 
 // getAllEvents
 export const getAllEvents = callback => {
@@ -14,6 +15,20 @@ export const getAllEvents = callback => {
     }
     callback(events);
   });
+};
+
+// getUserEvents
+export const getUserEvents = userEventsCallback => {
+  const allEventsCallback = events => {
+    userEvents = []
+    for (var entry of events) {
+      if (entry["userId"] == getUserId()) {
+        userEvents = [...userEvents, entry];
+      }
+    }
+    userEventsCallback(userEvents);
+  };
+  getAllEvents(allEventsCallback);
 };
 
 // setEvent
