@@ -3,29 +3,18 @@ import { getUserId } from "./auth.js";
 
 // getAllEvents
 export const getAllEvents = callback => {
-  events = [];
   let query = firebase.database().ref();
   query.child("events").once("value", data => {
-    for (var entry of Object.entries(data.val())) {
-      const idEntry = {
-        id: entry[0],
-        ...entry[1]
-      };
-      events = [...events, idEntry];
-    }
+    const events = Object.entries(data.val()).map(event => event = { id: event[0], ...event[1] });
     callback(events);
   });
 };
 
 // getUserEvents
 export const getUserEvents = userEventsCallback => {
+  const userID = getUserId();
   const allEventsCallback = events => {
-    userEvents = []
-    for (var entry of events) {
-      if (entry["userId"] == getUserId()) {
-        userEvents = [...userEvents, entry];
-      }
-    }
+    const userEvents = events.filter(event => event['userId'] === userID);
     userEventsCallback(userEvents);
   };
   getAllEvents(allEventsCallback);
