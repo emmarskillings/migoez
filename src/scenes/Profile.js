@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, SafeAreaView, Text } from "react-native";
-import { getUserEvents } from "../api/events.js";
+import { StyleSheet, View, Button, SafeAreaView, Text, FlatList } from "react-native";
+import { getUserEvents, deleteEvent } from "../api/events.js";
 
 class Profile extends Component {
   constructor() {
@@ -20,10 +20,12 @@ class Profile extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.button}>
-          <Text> My events </Text>
-          <Button onPress={this.props.onLogout} title="Log Out" />
-        </View>
+        <FlatList
+          data={this.state.userEvents}
+          renderItem={({item}) => <Button title={item.title} onPress={() => deleteEvent(item.id)} />}
+          keyExtractor={(item, index) => item.title}
+        />
+        <Button style={styles.button} onPress={this.props.onLogout} title="Log Out" />
       </SafeAreaView>
     )
   }
@@ -35,11 +37,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5FCFF"
   },
   button: {
-    flex: 1,
+    flex: 2,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5FCFF"
-  },
+  }
 });
 
 export default Profile;

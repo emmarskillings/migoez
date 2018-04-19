@@ -12,9 +12,9 @@ export const getAllEvents = callback => {
 
 // getUserEvents
 export const getUserEvents = userEventsCallback => {
-  const userID = getUserId();
+  const userId = getUserId();
   const allEventsCallback = events => {
-    const userEvents = events.filter(event => event['userId'] === userID);
+    const userEvents = events.filter(event => event['userId'] === userId);
     userEventsCallback(userEvents);
   };
   getAllEvents(allEventsCallback);
@@ -39,4 +39,13 @@ export const setEvent = (
     userId
   });
   callback();
+};
+
+// deleteEvent
+export const deleteEvent = (eventId) => {
+  const deleteEventCallback = events => {
+    const eventToDelete = events.filter(event => event['id'] === eventId);
+    console.log(eventToDelete);
+  }
+  getUserEvents(deleteEventCallback);
 };
