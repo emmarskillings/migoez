@@ -45,7 +45,7 @@ export const setEvent = (
 export const deleteEvent = (eventId) => {
   const deleteEventCallback = events => {
     const eventToDelete = events.filter(event => event['id'] === eventId);
-    console.log(eventToDelete);
+    firebase.database().ref("events").child(eventId).remove();
   }
   getUserEvents(deleteEventCallback);
 };
