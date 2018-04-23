@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
-import { MapView } from "expo";
+import { MapView, Location, Permissions } from "expo";
 import { getAllEvents } from "../api/events.js";
 
 class Map extends Component {
   constructor() {
     super();
     this.state = {
-      markers: []
+      markers: [],
+      location: null
     };
   }
 
@@ -16,16 +17,28 @@ class Map extends Component {
       this.setState({ markers });
     };
     getAllEvents(callback);
+
+    this.getLocationAsync();
   }
 
+  getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== "granted") {
+      console.log("Permission is not granted");
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({ location });
+  };
+
   render() {
-    return (
+    return this.state.location === null ? null : (
       <SafeAreaView style={styles.container}>
         <MapView
           style={styles.map}
-          initialRegion={{
-            latitude: 49.2625998,
-            longitude: -123.1193748,
+          region={{
+            latitude: this.state.location.coords.latitude,
+            longitude: this.state.location.coords.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421
           }}
