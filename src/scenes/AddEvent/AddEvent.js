@@ -16,15 +16,15 @@ import TextButton from "./components/TextButton.js";
 import DurationPicker from "./components/DurationPicker.js";
 
 class AddEvent extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       title: "",
       description: "",
       coords: {},
       location: "",
       startTime: moment(),
-      endTime: moment(),
+      endTime: moment().add(1, 'hours'),
       userId: getUserId(),
       selectingLocation: false
     };

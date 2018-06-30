@@ -8,7 +8,7 @@ import { StyleSheet, Text, TextInput, Button, SafeAreaView } from "react-native"
 
 class LoggedOut extends Component {
 	constructor(props) {
-		super(props)
+		super(props);
 		this.state = {
 			email: "",
 			password: ""

@@ -1,4 +1,5 @@
 import firebase from "./config";
+import { Alert } from "react-native";
 
 export const checkLoginStatus = callback => {
   firebase.auth().onAuthStateChanged(callback);
@@ -19,6 +20,7 @@ export const onLogin = (email, password) => {
     })
     .catch(error => {
       const { code, message } = error;
+      Alert.alert("Error: ", message);
       console.log("Error: ", message);
       // For details of error codes, see the docs
       // The message contains the default Firebase string
@@ -31,6 +33,7 @@ export const onRegister = (email, password) => {
     .auth()
     .createUserWithEmailAndPassword(email, password)
     .then(user => {
+      Alert.alert("Hooray!", "You're registered");
       console.log("Hooray!", user);
       // If you need to do anything with the user, do it here
       // The user will be logged in automatically by the
@@ -38,7 +41,8 @@ export const onRegister = (email, password) => {
     })
     .catch(error => {
       const { code, message } = error;
-      console.log("Oh no", error);
+      Alert.alert("Error: ", message);
+      console.log("Error: ", message);
       // For details of error codes, see the docs
       // The message contains the default Firebase string
       // representation of the error
@@ -53,6 +57,8 @@ export const onLogout = () => {
       console.log("Logged out");
     })
     .catch(error => {
-      console.log("Oh no", error);
+      const { code, message } = error;
+      Alert.alert("Error: ", message);
+      console.log("Error: ", message);
     });
 };
