@@ -10,12 +10,11 @@ class Map extends Component {
       markers: [],
       location: null
     };
-
-    this._sub = 0;
   }
 
   componentDidMount() {
     this.getLocationAndEvents();
+    this.props.navigation.setParams({ handleTabFocus: this.handleTabFocus });
   }
   getLocationAndEvents = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -25,24 +24,22 @@ class Map extends Component {
 
     let location = await Location.getCurrentPositionAsync({});
     const center = [location.coords.latitude, location.coords.longitude];
-    getLocalEvents(center, 7, marker => {
+
+    const onEnter = marker => {
       this.setState({ markers: [...this.state.markers, marker] });
-    });
+    };
+    const onExit = markerId => {
+      this.setState({
+        markers: this.state.markers.filter(marker => marker.id !== markerId)
+      });
+    };
+    getLocalEvents(center, 7, onEnter, onExit);
     this.setState({ location: center });
   };
 
   handleTabFocus = () => {
-    const callback = markers => {
-      this.setState({ markers });
-    };
-    getAllEvents(callback);
-    this.getLocationAsync();
+    //this.getLocationAndEvents();
   };
-
-  componentDidMount() {
-    this.handleTabFocus();
-    this.props.navigation.setParams({ handleTabFocus: this.handleTabFocus });
-  }
 
   render() {
     return this.state.location === null ? null : (

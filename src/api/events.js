@@ -3,7 +3,7 @@ import { getUserId } from "./auth.js";
 
 import geofire from "./geofire.js";
 
-export const getLocalEvents = (center, radius, callback) => {
+export const getLocalEvents = (center, radius, onEnter, onExit) => {
   let query = geofire.query({
     center,
     radius
@@ -15,19 +15,36 @@ export const getLocalEvents = (center, radius, callback) => {
       .child(key)
       .once("value")
       .then(snapshot => {
-        callback({ id: key, ...snapshot.val(), coords: location });
+        onEnter({ id: key, ...snapshot.val(), coords: location });
       });
+  });
+
+  query.on("key_exited", (key, location, distance) => {
+    onExit(key);
   });
 };
 
 // getUserEvents
 export const getUserEvents = userEventsCallback => {
   const userId = getUserId();
-  const allEventsCallback = events => {
-    const userEvents = events.filter(event => event["userId"] === userId);
-    userEventsCallback(userEvents);
-  };
-  getAllEvents(allEventsCallback);
+
+  firebase
+    .database()
+    .ref()
+    .child("events")
+    .orderByChild("userId")
+    .equalTo(userId)
+    .once("value", snapshot => {
+      const val = snapshot.val();
+      const events =
+        val === null
+          ? []
+          : Object.entries(val).map(event => ({
+              id: event[0],
+              ...event[1]
+            }));
+      userEventsCallback(events);
+    });
 };
 
 // setEvent
@@ -70,6 +87,8 @@ export const deleteEvent = (eventId, callback) => {
       .ref("events")
       .child(eventId)
       .remove();
+
+    geofire.remove(eventId);
     callback();
   };
   getUserEvents(deleteEventCallback);
