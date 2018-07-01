@@ -22,6 +22,15 @@ export const getLocalEvents = (center, radius, onEnter, onExit) => {
   query.on("key_exited", (key, location, distance) => {
     onExit(key);
   });
+
+  return query;
+};
+
+export const updateLocalEvents = (center, radius, query) => {
+  query.updateCriteria({
+    center,
+    radius
+  });
 };
 
 // getUserEvents
