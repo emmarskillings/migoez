@@ -1,0 +1,10 @@
+// These rules require authentication
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+      "locations": {
+        ".indexOn": "g"
+      }
+  }
+}
