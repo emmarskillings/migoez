@@ -1,15 +1,24 @@
 import React, { Component } from "react";
 import { StyleSheet, SafeAreaView, Text } from "react-native";
 import { MapView, Location, Permissions } from "expo";
-import { getLocalEvents } from "../api/events.js";
+import { getLocalEvents, updateLocalEvents } from "../api/events.js";
+
+const KILO_PER_DELTA = 150;
 
 class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
       markers: [],
-      location: null
+      location: null,
+      delta: {
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      },
+      query: null
     };
+
+    this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this);
   }
 
   componentDidMount() {
@@ -33,13 +42,31 @@ class Map extends Component {
         markers: this.state.markers.filter(marker => marker.id !== markerId)
       });
     };
-    getLocalEvents(center, 7, onEnter, onExit);
-    this.setState({ location: center });
+    let query = getLocalEvents(
+      center,
+      this.state.delta.latitudeDelta * KILO_PER_DELTA,
+      onEnter,
+      onExit
+    );
+    this.setState({ location: center, query });
   };
 
   handleTabFocus = () => {
     //this.getLocationAndEvents();
   };
+
+  onRegionChangeComplete(region) {
+    if (this.state.query !== null) {
+      const { latitudeDelta, longitudeDelta } = region;
+      const center = [region.latitude, region.longitude];
+      const radius = latitudeDelta * KILO_PER_DELTA;
+      updateLocalEvents(center, radius, this.state.query);
+      this.setState({
+        location: center,
+        delta: { latitudeDelta, longitudeDelta }
+      });
+    }
+  }
 
   render() {
     return this.state.location === null ? null : (
@@ -49,9 +76,10 @@ class Map extends Component {
           region={{
             latitude: this.state.location[0],
             longitude: this.state.location[1],
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
+            latitudeDelta: this.state.delta.latitudeDelta,
+            longitudeDelta: this.state.delta.longitudeDelta
           }}
+          onRegionChangeComplete={this.onRegionChangeComplete}
         >
           {this.state.markers.map(marker => (
             <MapView.Marker

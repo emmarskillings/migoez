@@ -18,13 +18,17 @@ import DurationPicker from "./components/DurationPicker.js";
 class AddEvent extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = this.getInitialState();
+  }
+
+  getInitialState() {
+    return {
       title: "",
       description: "",
       coords: {},
       location: "",
       startTime: moment(),
-      endTime: moment().add(1, 'hours'),
+      endTime: moment().add(1, "hours"),
       userId: getUserId(),
       selectingLocation: false
     };
@@ -44,10 +48,11 @@ class AddEvent extends Component {
       const sentState = {
         ...this.state,
         startTime: this.state.startTime.format("MMMM Do YYYY, h:mm a"),
-        endTime: this.state.endTime.format("MMMM Do YYYY, h:mm a")  
+        endTime: this.state.endTime.format("MMMM Do YYYY, h:mm a")
       };
       const callback = () => Alert.alert("Event Successfully Added");
       setEvent(sentState, callback);
+      this.setState(this.getInitialState());
     }
   }
 
@@ -71,7 +76,7 @@ class AddEvent extends Component {
           value={this.state.title}
         />
         <TextInput
-          style={styles.textInput}
+          style={[styles.textInput, { height: 70 }]}
           placeholder="Description"
           multiline={true}
           numberOfLines={3}
