@@ -30,6 +30,7 @@ class LoggedOut extends Component {
 					   placeholder="Password"
 					   onChangeText={(text) => this.setState({ password: text })}
 					   value={this.state.password}
+					   secureTextEntry={true}
 			/>
 			<Button onPress={() => onLogin(this.state.email, this.state.password)} 
 					title="Log In"

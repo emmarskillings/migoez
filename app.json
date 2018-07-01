@@ -2,7 +2,7 @@
   "expo": {
     "name": "migoez",
     "slug": "migoez",
-    "description": "Welcome to the migoez v0.1 splash page! 'Request a link' to the right to try out the app! Tip: Click on the Map tab to refresh the map!",
+    "description": "Welcome to the migoez v0.1 splash page! 'Request a link' to the right to try out the app! On iOS you will need to be logged into this account in order to use the app, please contact the distributers for details.",
     "privacy": "public",
     "orientation": "portrait",
     "sdkVersion": "25.0.0",
