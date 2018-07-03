@@ -1,12 +1,13 @@
 import React from "React";
 import { TextInput, StyleSheet } from "react-native";
 
-const TextBox = ({ placeholder, onChangeText, value }) => (
+const TextBox = ({ placeholder, onChangeText, value, secureTextEntry }) => (
   <TextInput
     style={styles.textInput}
     placeholder={placeholder}
     onChangeText={text => onChangeText(text)}
     value={value}
+    secureTextEntry={secureTextEntry}
     underlineColorAndroid="transparent"
   />
 );
