@@ -3,6 +3,9 @@
   "rules": {
     ".read": "auth != null",
     ".write": "auth != null",
+      "events": {
+      	".indexOn": ["endTimeMilliseconds", "userId"]
+      },
       "locations": {
         ".indexOn": "g"
       }

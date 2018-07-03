@@ -1,0 +1,18 @@
+[debug] [2018-07-01T04:18:11.239Z] ----------------------------------------------------------------------
+[debug] [2018-07-01T04:18:11.241Z] Command:       /usr/local/Cellar/node/9.4.0/bin/node /usr/local/bin/firebase deploy
+[debug] [2018-07-01T04:18:11.241Z] CLI Version:   3.19.1
+[debug] [2018-07-01T04:18:11.241Z] Platform:      darwin
+[debug] [2018-07-01T04:18:11.241Z] Node Version:  v9.4.0
+[debug] [2018-07-01T04:18:11.242Z] Time:          Sat Jun 30 2018 21:18:11 GMT-0700 (PDT)
+[debug] [2018-07-01T04:18:11.242Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-07-01T04:18:11.253Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-07-01T04:18:11.254Z] > authorizing via signed-in user
+[debug] [2018-07-01T04:18:11.255Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/migoez-1337  
+  
+ Sat Jun 30 2018 21:18:11 GMT-0700 (PDT)
+[debug] [2018-07-01T04:18:11.730Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-01T04:18:11.730Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/migoez-1337/tokens  
+  
+ Sat Jun 30 2018 21:18:11 GMT-0700 (PDT)
+[debug] [2018-07-01T04:18:12.144Z] <<< HTTP RESPONSE 200

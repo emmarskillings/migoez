@@ -48,7 +48,8 @@ class AddEvent extends Component {
       const sentState = {
         ...this.state,
         startTime: this.state.startTime.format("MMMM Do YYYY, h:mm a"),
-        endTime: this.state.endTime.format("MMMM Do YYYY, h:mm a")
+        endTime: this.state.endTime.format("MMMM Do YYYY, h:mm a"),
+        endTimeMilliseconds: this.state.endTime.valueOf()
       };
       const callback = () => Alert.alert("Event Successfully Added");
       setEvent(sentState, callback);

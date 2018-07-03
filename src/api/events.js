@@ -58,7 +58,7 @@ export const getUserEvents = userEventsCallback => {
 
 // setEvent
 export const setEvent = (
-  { coords, location, title, description, startTime, endTime, userId },
+  { coords, location, title, description, startTime, endTime, userId, endTimeMilliseconds },
   callback
 ) => {
   let newEventRef = firebase
@@ -83,7 +83,8 @@ export const setEvent = (
     description,
     startTime,
     endTime,
-    userId
+    userId,
+    endTimeMilliseconds
   });
   callback();
 };
